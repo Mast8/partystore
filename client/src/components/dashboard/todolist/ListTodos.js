@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import EditTodo from "./EditTodo";
 
 const ListTodos = ({ allTodos, setTodosChange }) => {
-  console.log(allTodos);
+  //console.log(allTodos);
   const [todos, setTodos] = useState([]); //empty array
 
   //delete todo function
@@ -20,19 +20,36 @@ const ListTodos = ({ allTodos, setTodosChange }) => {
     }
   }
 
+  const getTodos = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/products");
+      const jsonData = await response.json();
+
+      setTodos(jsonData);
+      console.log(jsonData);
+    } catch (err) {
+      //console.error(err.message);
+    }
+  };
+
   // async function getTodos() {
-  //   const res = await fetch("http://localhost:5000/todos");
+  //   const res = await fetch("http://localhost:5000/products");
 
   //   const todoArray = await res.json();
 
   //   setTodos(todoArray);
+  //   //console.log(todoArray);
   // }
 
-  useEffect(() => {
-    setTodos(allTodos);
-  }, [allTodos]);
+  // useEffect(() => {
+  //   setTodos(allTodos);
+  // }, [allTodos]);
 
-  console.log(todos);
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+  //console.log(todos);
 
   return (
     <Fragment>
@@ -55,8 +72,8 @@ const ListTodos = ({ allTodos, setTodosChange }) => {
           {todos.length !== 0 &&
             todos[0].todo_id !== null &&
             todos.map(todo => (
-              <tr key={todo.todo_id}>
-                <td>{todo.description}</td>
+              <tr key={todo.product_id}>
+                <td>{todo.product_description}</td>
                 <td>
                   <EditTodo todo={todo} setTodosChange={setTodosChange} />
                 </td>

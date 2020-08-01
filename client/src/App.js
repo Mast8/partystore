@@ -16,6 +16,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import Landing from "./components/Landing";
+import ListProductsConsumer from "./components/dashboard/todolist/ListProductsConsumer";
 
 toast.configure();
 
@@ -50,6 +51,14 @@ function App() {
       <Router>
         <div className="container">
           <Switch>
+          <Route
+                exact
+                path="/products"
+                render={props =>
+                  <ListProductsConsumer/>
+                }
+            />
+
             <Route
               exact
               path="/"

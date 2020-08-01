@@ -5,11 +5,12 @@ import { toast } from "react-toastify";
 
 import InputTodo from "./todolist/InputTodo";
 import ListTodos from "./todolist/ListTodos";
+import ListProducts from "./todolist/ListProducts";
 
 const Dashboard = ({ setAuth }) => {
   const [name, setName] = useState("");
-  const [allTodos, setAllTodos] = useState([]);
-  const [todosChange, setTodosChange] = useState(false);
+  const [allProducts, setAllProducts] = useState([]);
+  const [productsChange, setProductsChange] = useState(false);
 
   const getProfile = async () => {
     try {
@@ -19,8 +20,8 @@ const Dashboard = ({ setAuth }) => {
       });
 
       const parseData = await res.json();
-
-      setAllTodos(parseData);
+      //console.log(parseData);
+      //setAllTodos(parseData);
 
       setName(parseData[0].user_name);
     } catch (err) {
@@ -39,22 +40,36 @@ const Dashboard = ({ setAuth }) => {
     }
   };
 
+   const getTodos = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/products");
+      //to catch error      
+      //console.log(res);
+      const parseData = await res.json();
+      setAllProducts(parseData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   useEffect(() => {
     getProfile();
-    setTodosChange(false);
-  }, [todosChange]);
+    getTodos();
+    setProductsChange(false);
+  }, [productsChange]);
 
   return (
     <div>
       <div className="d-flex mt-5 justify-content-around">
-        <h2>{name} 's Todo List</h2>
+        <h2>Hello {name}</h2>
         <button onClick={e => logout(e)} className="btn btn-primary">
           Logout
         </button>
       </div>
 
-      <InputTodo setTodosChange={setTodosChange} />
-      <ListTodos allTodos={allTodos} setTodosChange={setTodosChange} />
+      <InputTodo setProductsChange={setProductsChange} />
+      {/* <ListTodos allTodos={allTodos} setTodosChange={setTodosChange} /> */}
+      <ListProducts allProducts={allProducts} setProductsChange={setProductsChange}/>
     </div>
   );
 };
